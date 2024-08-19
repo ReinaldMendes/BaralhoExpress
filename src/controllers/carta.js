@@ -1,15 +1,14 @@
 const db = [];
 const naipe_controller = require("./controllers/naipe.js");
 let nextId = 1;
+
 const model = (carta, id = nextId++) => {
-  if (
-    carta.nome != undefined &&
-    carta.nome != "" &&
-    naipe_controller.id != ""
-  ) {
+  const naipe = naipe_controller.show(carta.naipe_id); // Busca o naipe pelo ID
+
+  if (carta.nome != undefined && carta.nome != "" && naipe) {
     return {
       id,
-      naipe_controller: naipe_controller.id,
+      naipe_id: naipe.id, // Armazena o ID do naipe
       nome: carta.nome,
     };
   }
@@ -37,6 +36,7 @@ const update = (id, body) => {
   }
   return 400;
 };
+
 const destroy = (id) => {
   const index = db.findIndex((el) => el.id == id);
   if (index != -1) {
